@@ -1,0 +1,834 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Syncra — Sistema Interno</title>
+  <link rel="stylesheet" href="syncra.css">
+</head>
+<body>
+
+<!-- TOAST GLOBAL -->
+<div class="toast" id="toast-global">
+  <span class="toast-icon" id="toast-icon">✓</span>
+  <span id="toast-msg">Mensagem</span>
+</div>
+
+<!-- MODAL CONSULTAR -->
+<div class="modal-overlay" id="modal-overlay" onclick="fecharModal(event)">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-tg">
+        <span class="modal-badge" id="modal-badge">PDF</span>
+        <span class="modal-title" id="modal-title">—</span>
+      </div>
+      <button class="modal-close" onclick="fecharModal()">✕</button>
+    </div>
+    <div class="modal-body" id="modal-body"></div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="fecharModal()">Fechar</button>
+      <button class="btn btn-primary"><span>⬇</span><span>Baixar arquivo</span></button>
+    </div>
+  </div>
+</div>
+
+<!-- =============================================
+   SCREEN: LOGIN
+============================================= -->
+<div class="screen active" id="screen-login">
+
+  <!-- ESQUERDA -->
+  <div class="login-left">
+    <div class="left-content">
+
+      <div class="brand-mark">
+        <span class="bm-dot"></span>
+        <span class="bm-dot"></span>
+        <span class="bm-dot"></span>
+      </div>
+
+      <div>
+        <p class="left-eyebrow">Plataforma Interna</p>
+        <h1 class="left-title">
+          Sincronize <em>tudo</em><br>em um só lugar.
+        </h1>
+      </div>
+
+      <p class="left-sub">
+        O Syncra centraliza comunicação, documentos e processos
+        em um ambiente digital integrado — sem papel, sem ruído.
+      </p>
+
+      <div class="left-stats">
+        <div class="ls-item">
+          <span class="ls-num">128</span>
+          <span class="ls-lbl">Documentos</span>
+        </div>
+        <div class="ls-item">
+          <span class="ls-num">6</span>
+          <span class="ls-lbl">Setores</span>
+        </div>
+        <div class="ls-item">
+          <span class="ls-num">12</span>
+          <span class="ls-lbl">Pessoas</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- DIREITA -->
+  <div class="login-right">
+    <div class="login-box">
+
+      <div>
+        <div class="lb-brand">
+          <span class="lb-brand-dot"></span>
+          <span class="lb-brand-name">Syncra</span>
+        </div>
+        <h2 class="lb-title">Bem-vindo de volta</h2>
+        <p class="lb-sub" style="margin-top:6px;">Acesso exclusivo para colaboradores</p>
+      </div>
+
+      <div class="fgroup">
+        <label class="flabel">E-mail corporativo</label>
+        <div class="finput-wrap">
+          <input type="email" class="finput" id="email-input" placeholder="seu@empresa.com.br">
+          <span class="finput-icon">✉</span>
+        </div>
+      </div>
+
+      <div class="fgroup">
+        <label class="flabel">Senha</label>
+        <div class="finput-wrap">
+          <input type="password" class="finput" id="senha-input" placeholder="••••••••" onkeydown="if(event.key==='Enter') entrar()">
+          <span class="finput-icon">⚿</span>
+          <button class="eye-btn" type="button" onclick="toggleSenha(this)">👁</button>
+        </div>
+      </div>
+
+      <div class="fopt">
+        <label class="fchk-label">
+          <input type="checkbox" id="lembrar">
+          <span class="fchk-box"></span>
+          <span>Lembrar acesso</span>
+        </label>
+        <a href="#" class="flnk">Esqueci a senha</a>
+      </div>
+
+      <button class="btn btn-primary" style="width:100%;justify-content:center;padding:15px;" onclick="entrar()">
+        <span>Entrar no sistema</span>
+        <span class="btn-arrow">→</span>
+      </button>
+
+      <div class="toast-login" id="toast-login">
+        <span id="tl-icon">✕</span>
+        <span id="tl-msg">E-mail ou senha incorretos.</span>
+      </div>
+
+      <p class="lbfoot">Syncra · Sistema interno de gestão · v2.0</p>
+
+    </div>
+  </div>
+</div>
+
+<!-- =============================================
+   SCREEN: DASHBOARD
+============================================= -->
+<div class="screen" id="screen-dashboard">
+  <div class="app-layout">
+
+    <aside class="sidebar">
+      <div class="sb-brand">
+        <span class="sb-dot"></span>
+        <span class="sb-name">Syncra</span>
+      </div>
+      <nav class="sb-nav">
+        <button class="nav-item active" onclick="navegarPara('dashboard')">
+          <span class="nav-icon">⊞</span><span class="nav-label">Dashboard</span>
+        </button>
+        <button class="nav-item" onclick="navegarPara('anexar')">
+          <span class="nav-icon">⊕</span><span class="nav-label">Anexar</span>
+        </button>
+        <button class="nav-item" onclick="navegarPara('consultar')">
+          <span class="nav-icon">◎</span><span class="nav-label">Consultar</span>
+        </button>
+        <button class="nav-item" onclick="navegarPara('mensagens')">
+          <span class="nav-icon">⊟</span><span class="nav-label">Mensagens</span>
+        </button>
+      </nav>
+      <div class="sb-footer">
+        <div class="sb-avatar">NB</div>
+        <div class="sb-uinfo">
+          <span class="sb-uname">Nicolas B.</span>
+          <span class="sb-urole">Colaborador</span>
+        </div>
+        <button class="sb-logout" onclick="navegarPara('login')" title="Sair">⎋</button>
+      </div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <div class="topbar-left">
+          <p class="page-eyebrow">Bem-vindo de volta</p>
+          <h2 class="page-title">Dashboard</h2>
+          <p class="page-sub">Visão geral do sistema · Hoje, <span id="data-hoje"></span></p>
+        </div>
+        <div class="topbar-right">
+          <button class="theme-toggle" onclick="toggleTema()">☀ · 🌙</button>
+        </div>
+      </header>
+
+      <div class="stats-grid">
+        <div class="stat-card card">
+          <span class="sc-label">Total de Documentos</span>
+          <span class="sc-value">128</span>
+          <span class="sc-delta up">↑ 12% este mês</span>
+        </div>
+        <div class="stat-card card">
+          <span class="sc-label">Enviados Hoje</span>
+          <span class="sc-value">4</span>
+          <span class="sc-delta up">↑ 2 vs ontem</span>
+        </div>
+        <div class="stat-card card">
+          <span class="sc-label">Setores Ativos</span>
+          <span class="sc-value">6</span>
+          <span class="sc-delta neutral">Produção, Qualidade...</span>
+        </div>
+        <div class="stat-card card">
+          <span class="sc-label">Pendente de Validação</span>
+          <span class="sc-value">1</span>
+          <span class="sc-delta down">↓ Estoque Semana 24</span>
+        </div>
+      </div>
+
+      <section class="section">
+        <div class="sec-header">
+          <h3 class="sec-title">Selecionar Setor</h3>
+          <span class="sec-hint">Clique para acessar</span>
+        </div>
+        <div class="sector-grid">
+          <div class="sector-card card" onclick="navegarPara('anexar')">
+            <div class="sc-ico">📁</div>
+            <div class="sc-info"><div class="sc-name">Produção</div><div class="sc-count">42 documentos</div></div>
+            <span class="sc-arr">→</span>
+          </div>
+          <div class="sector-card card" onclick="navegarPara('anexar')">
+            <div class="sc-ico">🔬</div>
+            <div class="sc-info"><div class="sc-name">Qualidade</div><div class="sc-count">29 documentos</div></div>
+            <span class="sc-arr">→</span>
+          </div>
+          <div class="sector-card card" onclick="navegarPara('anexar')">
+            <div class="sc-ico">🏗️</div>
+            <div class="sc-info"><div class="sc-name">Engenharia</div><div class="sc-count">18 documentos</div></div>
+            <span class="sc-arr">→</span>
+          </div>
+          <div class="sector-card card" onclick="navegarPara('anexar')">
+            <div class="sc-ico">💼</div>
+            <div class="sc-info"><div class="sc-name">Administrativo</div><div class="sc-count">21 documentos</div></div>
+            <span class="sc-arr">→</span>
+          </div>
+          <div class="sector-card card" onclick="navegarPara('anexar')">
+            <div class="sc-ico">🚚</div>
+            <div class="sc-info"><div class="sc-name">Logística</div><div class="sc-count">11 documentos</div></div>
+            <span class="sc-arr">→</span>
+          </div>
+          <div class="sector-card card" onclick="navegarPara('anexar')">
+            <div class="sc-ico">🤝</div>
+            <div class="sc-info"><div class="sc-name">Recursos Humanos</div><div class="sc-count">7 documentos</div></div>
+            <span class="sc-arr">→</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="sec-header">
+          <h3 class="sec-title">Atividade Recente</h3>
+          <span class="see-all" onclick="navegarPara('consultar')">Ver todos →</span>
+        </div>
+        <div class="card activity-list">
+          <div class="act-item"><div class="act-badge pdf">PDF</div><div class="act-info"><div class="act-name">Relatório de Produção — Junho</div><div class="act-meta">Produção · há 2 horas</div></div><div class="act-status ok">Validado</div></div>
+          <div class="act-item"><div class="act-badge doc">DOC</div><div class="act-info"><div class="act-name">Procedimento de Qualidade v3</div><div class="act-meta">Qualidade · há 5 horas</div></div><div class="act-status ok">Validado</div></div>
+          <div class="act-item"><div class="act-badge xls">XLS</div><div class="act-info"><div class="act-name">Planilha de Estoque — Semana 24</div><div class="act-meta">Logística · ontem</div></div><div class="act-status pending">Pendente</div></div>
+          <div class="act-item"><div class="act-badge pdf">PDF</div><div class="act-info"><div class="act-name">Manual de Integração RH</div><div class="act-meta">R. Humanos · ontem</div></div><div class="act-status ok">Validado</div></div>
+        </div>
+      </section>
+    </main>
+  </div>
+</div>
+
+<!-- =============================================
+   SCREEN: ANEXAR
+============================================= -->
+<div class="screen" id="screen-anexar">
+  <div class="app-layout">
+
+    <aside class="sidebar">
+      <div class="sb-brand"><span class="sb-dot"></span><span class="sb-name">Syncra</span></div>
+      <nav class="sb-nav">
+        <button class="nav-item" onclick="navegarPara('dashboard')"><span class="nav-icon">⊞</span><span class="nav-label">Dashboard</span></button>
+        <button class="nav-item active" onclick="navegarPara('anexar')"><span class="nav-icon">⊕</span><span class="nav-label">Anexar</span></button>
+        <button class="nav-item" onclick="navegarPara('consultar')"><span class="nav-icon">◎</span><span class="nav-label">Consultar</span></button>
+        <button class="nav-item" onclick="navegarPara('mensagens')"><span class="nav-icon">⊟</span><span class="nav-label">Mensagens</span></button>
+      </nav>
+      <div class="sb-footer"><div class="sb-avatar">NB</div><div class="sb-uinfo"><span class="sb-uname">Nicolas B.</span><span class="sb-urole">Colaborador</span></div><button class="sb-logout" onclick="navegarPara('login')" title="Sair">⎋</button></div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <div class="topbar-left">
+          <p class="page-eyebrow">Novo Envio</p>
+          <h2 class="page-title">Anexar Documento</h2>
+          <p class="page-sub">Envie arquivos para o setor responsável</p>
+        </div>
+        <button class="theme-toggle" onclick="toggleTema()">☀ · 🌙</button>
+      </header>
+
+      <div class="form-grid">
+        <div class="card form-card">
+          <div class="fc-header">
+            <div class="fc-icon">⊕</div>
+            <div><div class="fc-title">Arquivo</div><div class="fc-sub">Selecione ou arraste o documento</div></div>
+          </div>
+          <label class="drop-zone" for="file-input" id="drop-zone">
+            <div class="dz-inner" id="dz-inner">
+              <div class="dz-icon">📄</div>
+              <span class="dz-title">Arraste o arquivo aqui</span>
+              <span class="dz-sub">ou clique para selecionar</span>
+              <span class="dz-types">PDF · DOC · XLS · PNG · JPG</span>
+            </div>
+            <div class="file-prev" id="file-prev" style="display:none;">
+              <div class="fp-icon" id="fp-icon">📄</div>
+              <div class="fp-info"><span class="fp-name" id="fp-name">—</span><span class="fp-size" id="fp-size">—</span></div>
+              <button class="fp-remove" id="fp-remove" type="button">✕</button>
+            </div>
+          </label>
+          <input type="file" id="file-input" accept=".pdf,.doc,.docx,.xls,.xlsx,.png,.jpg,.jpeg" style="display:none;">
+        </div>
+
+        <div class="card form-card">
+          <div class="fc-header">
+            <div class="fc-icon">◎</div>
+            <div><div class="fc-title">Informações</div><div class="fc-sub">Preencha os dados do documento</div></div>
+          </div>
+          <div class="fg">
+            <label class="fg-label">Setor de destino <span class="req">*</span></label>
+            <div class="sel-wrap">
+              <select class="fsel" id="setor-select">
+                <option value="" disabled selected>Selecione o setor...</option>
+                <option value="producao">📁 Produção</option>
+                <option value="qualidade">🔬 Qualidade</option>
+                <option value="engenharia">🏗️ Engenharia</option>
+                <option value="administrativo">💼 Administrativo</option>
+                <option value="logistica">🚚 Logística</option>
+                <option value="rh">🤝 Recursos Humanos</option>
+              </select>
+              <span class="sel-arr">▾</span>
+            </div>
+          </div>
+          <div class="fg">
+            <label class="fg-label">Tipo de documento <span class="req">*</span></label>
+            <div class="sel-wrap">
+              <select class="fsel" id="tipo-select">
+                <option value="" disabled selected>Selecione o tipo...</option>
+                <option>Relatório</option><option>Procedimento</option>
+                <option>Planilha</option><option>Manual</option>
+                <option>Formulário</option><option>Outro</option>
+              </select>
+              <span class="sel-arr">▾</span>
+            </div>
+          </div>
+          <div class="fg">
+            <label class="fg-label">Título do documento <span class="req">*</span></label>
+            <input type="text" class="finput-plain" id="titulo-input" placeholder="Ex: Relatório de Produção — Junho">
+          </div>
+          <div class="fg">
+            <label class="fg-label">Descrição</label>
+            <textarea class="ftextarea" id="desc-input" placeholder="Descreva brevemente o conteúdo..."></textarea>
+          </div>
+          <div class="fg">
+            <label class="fg-label">Enviado por</label>
+            <input type="text" class="finput-plain" value="Nicolas B." disabled>
+          </div>
+        </div>
+      </div>
+
+      <div class="card action-bar">
+        <button class="btn-danger-ghost" onclick="limparFormulario()">✕ Limpar</button>
+        <div class="action-right">
+          <button class="btn btn-ghost" onclick="showToast('Rascunho salvo!','ok')">Salvar rascunho</button>
+          <button class="btn btn-primary" onclick="enviarDocumento()">
+            <span>Enviar documento</span><span class="btn-arrow">→</span>
+          </button>
+        </div>
+      </div>
+
+      <section class="section">
+        <div class="sec-header">
+          <h3 class="sec-title">Envios Recentes</h3>
+          <span class="see-all" onclick="navegarPara('consultar')">Ver todos →</span>
+        </div>
+        <div class="card recent-list">
+          <div class="rec-item"><div class="rec-badge pdf">PDF</div><div class="rec-info"><div class="rec-name">Relatório de Produção — Junho</div><div class="rec-meta">Produção · há 2 horas</div></div><div class="rec-setor">Produção</div><div class="rec-status ok">Validado</div></div>
+          <div class="rec-item"><div class="rec-badge doc">DOC</div><div class="rec-info"><div class="rec-name">Procedimento de Qualidade v3</div><div class="rec-meta">Qualidade · há 5 horas</div></div><div class="rec-setor">Qualidade</div><div class="rec-status ok">Validado</div></div>
+          <div class="rec-item"><div class="rec-badge xls">XLS</div><div class="rec-info"><div class="rec-name">Planilha de Estoque — Semana 24</div><div class="rec-meta">Logística · ontem</div></div><div class="rec-setor">Logística</div><div class="rec-status pending">Pendente</div></div>
+        </div>
+      </section>
+    </main>
+  </div>
+</div>
+
+<!-- =============================================
+   SCREEN: CONSULTAR
+============================================= -->
+<div class="screen" id="screen-consultar">
+  <div class="app-layout">
+
+    <aside class="sidebar">
+      <div class="sb-brand"><span class="sb-dot"></span><span class="sb-name">Syncra</span></div>
+      <nav class="sb-nav">
+        <button class="nav-item" onclick="navegarPara('dashboard')"><span class="nav-icon">⊞</span><span class="nav-label">Dashboard</span></button>
+        <button class="nav-item" onclick="navegarPara('anexar')"><span class="nav-icon">⊕</span><span class="nav-label">Anexar</span></button>
+        <button class="nav-item active" onclick="navegarPara('consultar')"><span class="nav-icon">◎</span><span class="nav-label">Consultar</span></button>
+        <button class="nav-item" onclick="navegarPara('mensagens')"><span class="nav-icon">⊟</span><span class="nav-label">Mensagens</span></button>
+      </nav>
+      <div class="sb-footer"><div class="sb-avatar">NB</div><div class="sb-uinfo"><span class="sb-uname">Nicolas B.</span><span class="sb-urole">Colaborador</span></div><button class="sb-logout" onclick="navegarPara('login')" title="Sair">⎋</button></div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <div class="topbar-left">
+          <p class="page-eyebrow">Arquivo</p>
+          <h2 class="page-title">Consultar Documentos</h2>
+          <p class="page-sub">Busque e visualize documentos do sistema</p>
+        </div>
+        <button class="theme-toggle" onclick="toggleTema()">☀ · 🌙</button>
+      </header>
+
+      <div class="filters-bar">
+        <div class="srch-wrap">
+          <span class="srch-icon">⌕</span>
+          <input type="text" class="srch-input" id="search-input" placeholder="Buscar por nome, setor ou autor..." oninput="filtrarDocs()">
+        </div>
+        <div class="flt-wrap">
+          <select class="flt-sel" id="filter-setor" onchange="filtrarDocs()">
+            <option value="">Todos os setores</option>
+            <option>Produção</option><option>Qualidade</option>
+            <option>Engenharia</option><option>Administrativo</option>
+            <option>Logística</option><option>R. Humanos</option>
+          </select>
+          <span class="flt-arr">▾</span>
+        </div>
+        <div class="flt-wrap">
+          <select class="flt-sel" id="filter-status" onchange="filtrarDocs()">
+            <option value="">Todos os status</option>
+            <option value="ok">Validado</option>
+            <option value="pending">Pendente</option>
+          </select>
+          <span class="flt-arr">▾</span>
+        </div>
+        <button class="btn-danger-ghost" onclick="limparFiltros()">✕ Limpar</button>
+      </div>
+
+      <p class="res-info" id="res-info">Exibindo 8 documentos</p>
+
+      <div class="card table-wrap">
+        <table class="doc-table">
+          <thead>
+            <tr>
+              <th>Tipo</th><th>Documento</th><th>Setor</th>
+              <th>Autor</th><th>Data</th><th>Status</th><th></th>
+            </tr>
+          </thead>
+          <tbody id="docs-tbody"></tbody>
+        </table>
+      </div>
+    </main>
+  </div>
+</div>
+
+<!-- =============================================
+   SCREEN: MENSAGENS
+============================================= -->
+<div class="screen" id="screen-mensagens">
+  <div class="app-layout">
+
+    <aside class="sidebar">
+      <div class="sb-brand"><span class="sb-dot"></span><span class="sb-name">Syncra</span></div>
+      <nav class="sb-nav">
+        <button class="nav-item" onclick="navegarPara('dashboard')"><span class="nav-icon">⊞</span><span class="nav-label">Dashboard</span></button>
+        <button class="nav-item" onclick="navegarPara('anexar')"><span class="nav-icon">⊕</span><span class="nav-label">Anexar</span></button>
+        <button class="nav-item" onclick="navegarPara('consultar')"><span class="nav-icon">◎</span><span class="nav-label">Consultar</span></button>
+        <button class="nav-item active" onclick="navegarPara('mensagens')"><span class="nav-icon">⊟</span><span class="nav-label">Mensagens</span></button>
+      </nav>
+      <div class="sb-footer"><div class="sb-avatar">NB</div><div class="sb-uinfo"><span class="sb-uname">Nicolas B.</span><span class="sb-urole">Colaborador</span></div><button class="sb-logout" onclick="navegarPara('login')" title="Sair">⎋</button></div>
+    </aside>
+
+    <div class="chat-wrapper">
+      <aside class="chat-list">
+        <div class="cl-header">
+          <div class="cl-title-row">
+            <h3 class="cl-title">Mensagens</h3>
+            <button class="theme-toggle" style="padding:6px 12px;font-size:12px;" onclick="toggleTema()">☀·🌙</button>
+          </div>
+          <div class="cl-srch-wrap">
+            <span class="cl-srch-ico">⌕</span>
+            <input type="text" class="cl-srch" placeholder="Buscar conversa..." id="search-conv" oninput="filtrarConversas()">
+          </div>
+        </div>
+        <div class="cl-tabs">
+          <button class="cl-tab active" onclick="trocarTab('direto',this)">Direto</button>
+          <button class="cl-tab" onclick="trocarTab('grupos',this)">Grupos</button>
+        </div>
+        <div class="conv-list" id="conv-list"></div>
+      </aside>
+
+      <main class="chat-main">
+        <div class="chat-empty-state" id="chat-empty">
+          <div class="ce-icon">💬</div>
+          <p class="ce-title">Selecione uma conversa</p>
+          <p class="ce-sub">Escolha um contato ou grupo ao lado para começar</p>
+        </div>
+        <div class="chat-active" id="chat-active" style="display:none;">
+          <div class="chat-hdr">
+            <div class="ch-info">
+              <div class="ch-av" id="ch-av">NB</div>
+              <div>
+                <div class="ch-name" id="ch-name">—</div>
+                <div class="ch-status" id="ch-status">online</div>
+              </div>
+            </div>
+            <div class="ch-actions">
+              <button class="ch-btn">⌕</button>
+              <button class="ch-btn">⋮</button>
+            </div>
+          </div>
+          <div class="msgs-area" id="msgs-area"></div>
+          <div class="chat-input">
+            <button class="ci-btn" onclick="simularAnexo()">📎</button>
+            <input type="text" class="ci-input" id="msg-input" placeholder="Digite uma mensagem..." onkeydown="if(event.key==='Enter') enviarMensagem()">
+            <button class="ci-send" onclick="enviarMensagem()">
+              <span class="ci-send-ico">➤</span>
+            </button>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+</div>
+
+<!-- =============================================
+   JAVASCRIPT
+============================================= -->
+<script>
+/* NAVEGAÇÃO */
+function navegarPara(pagina) {
+  if (pagina === 'login') { location.reload(); return; }
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById('screen-' + pagina).classList.add('active');
+  if (pagina === 'consultar') renderDocs();
+  if (pagina === 'mensagens') renderLista(conversasDireto);
+  window.scrollTo(0,0);
+}
+
+/* DATA */
+document.getElementById('data-hoje').textContent = new Date().toLocaleDateString('pt-BR',{day:'2-digit',month:'long',year:'numeric'});
+
+/* TEMA */
+function toggleTema() { document.documentElement.classList.toggle('light'); }
+
+/* TOAST */
+function showToast(msg, tipo) {
+  const t = document.getElementById('toast-global');
+  document.getElementById('toast-icon').textContent = tipo === 'erro' ? '✕' : '✓';
+  document.getElementById('toast-msg').textContent = msg;
+  t.className = 'toast ' + tipo + ' show';
+  setTimeout(() => t.className = 'toast ' + tipo, 3500);
+}
+
+/* LOGIN */
+function entrar() {
+  const email = document.getElementById('email-input').value.trim();
+  const senha = document.getElementById('senha-input').value;
+  if (!email || !senha) { toastLogin('Preencha e-mail e senha para continuar.','erro'); return; }
+  if (email.includes('@') && senha.length >= 4) {
+    toastLogin('Acesso autorizado! Redirecionando...','ok');
+    setTimeout(() => navegarPara('dashboard'), 1200);
+    return;
+  }
+  toastLogin('E-mail ou senha incorretos.','erro');
+}
+function toastLogin(msg, tipo) {
+  const t = document.getElementById('toast-login');
+  document.getElementById('tl-icon').textContent = tipo === 'ok' ? '✓' : '✕';
+  document.getElementById('tl-msg').textContent = msg;
+  t.className = 'toast-login ' + tipo + ' show';
+  setTimeout(() => t.classList.remove('show'), 3000);
+}
+function toggleSenha(btn) {
+  const inp = btn.closest('.finput-wrap').querySelector('input');
+  inp.type = inp.type === 'password' ? 'text' : 'password';
+}
+
+/* ANEXAR */
+const fIcons = { pdf:'📄',doc:'📝',docx:'📝',xls:'📊',xlsx:'📊',png:'🖼️',jpg:'🖼️',jpeg:'🖼️' };
+function fmtBytes(b) {
+  if (b < 1024) return b + ' B';
+  if (b < 1048576) return (b/1024).toFixed(1) + ' KB';
+  return (b/1048576).toFixed(1) + ' MB';
+}
+function showPreview(file) {
+  const ext = file.name.split('.').pop().toLowerCase();
+  document.getElementById('fp-icon').textContent = fIcons[ext]||'📎';
+  document.getElementById('fp-name').textContent = file.name;
+  document.getElementById('fp-size').textContent = fmtBytes(file.size);
+  document.getElementById('dz-inner').style.display = 'none';
+  document.getElementById('file-prev').style.display = 'flex';
+  document.getElementById('drop-zone').classList.add('has-file');
+}
+document.getElementById('file-input').addEventListener('change', e => { if(e.target.files[0]) showPreview(e.target.files[0]); });
+document.getElementById('fp-remove').addEventListener('click', e => {
+  e.preventDefault();
+  document.getElementById('file-input').value = '';
+  document.getElementById('dz-inner').style.display = 'flex';
+  document.getElementById('file-prev').style.display = 'none';
+  document.getElementById('drop-zone').classList.remove('has-file');
+});
+const dz = document.getElementById('drop-zone');
+dz.addEventListener('dragover', e => { e.preventDefault(); dz.classList.add('dragging'); });
+dz.addEventListener('dragleave', () => dz.classList.remove('dragging'));
+dz.addEventListener('drop', e => {
+  e.preventDefault(); dz.classList.remove('dragging');
+  const f = e.dataTransfer.files[0];
+  if(f){ document.getElementById('file-input').files = e.dataTransfer.files; showPreview(f); }
+});
+function enviarDocumento() {
+  const setor  = document.getElementById('setor-select').value;
+  const tipo   = document.getElementById('tipo-select').value;
+  const titulo = document.getElementById('titulo-input').value.trim();
+  const arq    = document.getElementById('file-input').files[0];
+  if(!arq)    return showToast('Selecione um arquivo para enviar.','erro');
+  if(!setor)  return showToast('Selecione o setor de destino.','erro');
+  if(!tipo)   return showToast('Selecione o tipo de documento.','erro');
+  if(!titulo) return showToast('Informe o título do documento.','erro');
+  showToast('Documento enviado com sucesso!','ok');
+  limparFormulario();
+}
+function limparFormulario() {
+  ['setor-select','tipo-select'].forEach(id => document.getElementById(id).value = '');
+  ['titulo-input','desc-input'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('file-input').value = '';
+  document.getElementById('dz-inner').style.display = 'flex';
+  document.getElementById('file-prev').style.display = 'none';
+  document.getElementById('drop-zone').classList.remove('has-file');
+}
+
+/* CONSULTAR */
+const docsData = [
+  { tipo:'PDF', nome:'Relatório de Produção — Junho', setor:'Produção', autor:'Nicolas B.', data:'04/07/2025', status:'ok' },
+  { tipo:'DOC', nome:'Procedimento de Qualidade v3', setor:'Qualidade', autor:'Ana Costa', data:'04/07/2025', status:'ok' },
+  { tipo:'XLS', nome:'Planilha de Estoque — Semana 24', setor:'Logística', autor:'Roberto S.', data:'03/07/2025', status:'pending' },
+  { tipo:'PDF', nome:'Manual de Integração RH', setor:'R. Humanos', autor:'Mariana L.', data:'03/07/2025', status:'ok' },
+  { tipo:'PDF', nome:'Laudo de Inspeção — Linha A', setor:'Engenharia', autor:'Carlos M.', data:'02/07/2025', status:'ok' },
+  { tipo:'XLS', nome:'Planilha de Despesas — Junho', setor:'Administrativo', autor:'Paula R.', data:'01/07/2025', status:'ok' },
+  { tipo:'DOC', nome:'Norma Interna de Segurança v2', setor:'Qualidade', autor:'Ana Costa', data:'28/06/2025', status:'ok' },
+  { tipo:'PDF', nome:'Relatório de Manutenção — Semana 23', setor:'Engenharia', autor:'Carlos M.', data:'27/06/2025', status:'pending' },
+];
+const bClass = { DOC:'doc', XLS:'xls', IMG:'img' };
+function renderDocs() {
+  const busca  = (document.getElementById('search-input')?.value||'').toLowerCase();
+  const setor  = document.getElementById('filter-setor')?.value||'';
+  const status = document.getElementById('filter-status')?.value||'';
+  const f = docsData.filter(d =>
+    (d.nome.toLowerCase().includes(busca)||d.autor.toLowerCase().includes(busca)||d.setor.toLowerCase().includes(busca)) &&
+    (!setor||d.setor===setor) && (!status||d.status===status)
+  );
+  document.getElementById('res-info').textContent = `Exibindo ${f.length} documento${f.length!==1?'s':''}`;
+  const tbody = document.getElementById('docs-tbody');
+  if(!f.length){ tbody.innerHTML=`<tr><td colspan="7"><div class="empty-state"><div class="es-icon">◎</div><p class="es-title">Nenhum documento encontrado</p><p class="es-sub">Tente ajustar os filtros</p></div></td></tr>`; return; }
+  tbody.innerHTML = f.map((d,i) => `
+    <tr class="doc-row" onclick="abrirModal(${i})">
+      <td><span class="tbadge ${(bClass[d.tipo]||'pdf').toLowerCase()}">${d.tipo}</span></td>
+      <td class="doc-nome">${d.nome}</td>
+      <td><span class="setor-tag">${d.setor}</span></td>
+      <td class="doc-autor">${d.autor}</td>
+      <td class="doc-data">${d.data}</td>
+      <td><span class="status-tag ${d.status}">${d.status==='ok'?'Validado':'Pendente'}</span></td>
+      <td><button class="btn-ver" onclick="event.stopPropagation();abrirModal(${i})">Ver →</button></td>
+    </tr>
+  `).join('');
+}
+function filtrarDocs(){ renderDocs(); }
+function limparFiltros(){
+  ['search-input','filter-setor','filter-status'].forEach(id => document.getElementById(id).value='');
+  renderDocs();
+}
+let docsFiltered = docsData;
+function abrirModal(idx){
+  const d = docsData[idx];
+  const bc = (bClass[d.tipo]||'pdf').toLowerCase();
+  document.getElementById('modal-badge').textContent = d.tipo;
+  document.getElementById('modal-badge').className = 'modal-badge ' + bc;
+  document.getElementById('modal-title').textContent = d.nome;
+  document.getElementById('modal-body').innerHTML = [
+    ['Setor', `<span class="setor-tag">${d.setor}</span>`],
+    ['Autor', d.autor],
+    ['Data', d.data],
+    ['Status', `<span class="status-tag ${d.status}">${d.status==='ok'?'Validado':'Pendente'}</span>`],
+  ].map(([l,v]) => `<div class="modal-row"><span class="modal-lbl">${l}</span><span class="modal-val">${v}</span></div>`).join('');
+  document.getElementById('modal-overlay').classList.add('show');
+}
+function fecharModal(e){
+  if(!e||e.target===document.getElementById('modal-overlay')||e.currentTarget?.classList.contains('modal-close'))
+    document.getElementById('modal-overlay').classList.remove('show');
+}
+
+/* MENSAGENS */
+const conversasDireto = [
+  { id:1, nome:'Ana Costa', iniciais:'AC', status:'online', cargo:'Qualidade', naoLidas:2, ultimaMsg:'Pode verificar o procedimento?', hora:'09:41', mensagens:[
+    {de:'outro',texto:'Bom dia, Nicolas!',hora:'09:30'},
+    {de:'eu',texto:'Bom dia, Ana! Tudo bem?',hora:'09:31'},
+    {de:'outro',texto:'Precisava te perguntar sobre o procedimento de qualidade v3.',hora:'09:35'},
+    {de:'eu',texto:'Claro, já subi ele no sistema. Pode consultar em Documentos.',hora:'09:37'},
+    {de:'outro',texto:'Pode verificar o procedimento?',hora:'09:41'},
+  ]},
+  { id:2, nome:'Carlos M.', iniciais:'CM', status:'online', cargo:'Engenharia', naoLidas:0, ultimaMsg:'Laudo enviado, valeu!', hora:'08:55', mensagens:[
+    {de:'outro',texto:'Nicolas, o laudo de inspeção já foi validado?',hora:'08:40'},
+    {de:'eu',texto:'Sim! Acabei de validar agora.',hora:'08:42'},
+    {de:'outro',texto:'Ótimo. Preciso dele para a reunião das 10h.',hora:'08:50'},
+    {de:'eu',texto:'Disponível no sistema, setor Engenharia.',hora:'08:53'},
+    {de:'outro',texto:'Laudo enviado, valeu!',hora:'08:55'},
+  ]},
+  { id:3, nome:'Paula R.', iniciais:'PR', status:'ausente', cargo:'Administrativo', naoLidas:0, ultimaMsg:'Planilha de despesas atualizada.', hora:'Ontem', mensagens:[
+    {de:'outro',texto:'Boa tarde! Já atualizei a planilha de despesas de junho.',hora:'14:20'},
+    {de:'eu',texto:'Recebi, obrigado Paula!',hora:'14:25'},
+    {de:'outro',texto:'Planilha de despesas atualizada.',hora:'14:26'},
+  ]},
+  { id:4, nome:'Roberto S.', iniciais:'RS', status:'offline', cargo:'Logística', naoLidas:1, ultimaMsg:'Estoque da semana 25 pendente.', hora:'Ontem', mensagens:[
+    {de:'outro',texto:'O estoque da semana 24 ainda está pendente de validação.',hora:'16:10'},
+    {de:'eu',texto:'Vou verificar agora mesmo.',hora:'16:15'},
+    {de:'outro',texto:'Estoque da semana 25 pendente.',hora:'17:00'},
+  ]},
+  { id:5, nome:'Mariana L.', iniciais:'ML', status:'online', cargo:'Recursos Humanos', naoLidas:0, ultimaMsg:'Manual de integração aprovado!', hora:'Seg', mensagens:[
+    {de:'outro',texto:'Nicolas, o manual de integração foi aprovado pela diretoria!',hora:'10:00'},
+    {de:'eu',texto:'Que ótima notícia! Já está no sistema.',hora:'10:05'},
+    {de:'outro',texto:'Manual de integração aprovado!',hora:'10:06'},
+  ]},
+];
+const conversasGrupos = [
+  { id:10, nome:'Equipe Produção', iniciais:'EP', status:'grupo', cargo:'6 membros', naoLidas:5, ultimaMsg:'Carlos: Linha A liberada para operação.', hora:'10:02', mensagens:[
+    {de:'outro',autor:'Ana Costa',texto:'Bom dia equipe!',hora:'08:00'},
+    {de:'outro',autor:'Carlos M.',texto:'Reunião às 10h confirmada?',hora:'08:05'},
+    {de:'eu',texto:'Confirmo, às 10h na sala 2.',hora:'08:10'},
+    {de:'outro',autor:'Carlos M.',texto:'Linha A liberada para operação.',hora:'10:02'},
+  ]},
+  { id:11, nome:'Qualidade & Eng.', iniciais:'QE', status:'grupo', cargo:'4 membros', naoLidas:0, ultimaMsg:'Procedimento v3 aprovado por todos.', hora:'09:15', mensagens:[
+    {de:'outro',autor:'Ana Costa',texto:'Pessoal, o procedimento v3 foi revisado.',hora:'09:00'},
+    {de:'eu',texto:'Revisei e aprovei da minha parte.',hora:'09:10'},
+    {de:'outro',autor:'Ana Costa',texto:'Procedimento v3 aprovado por todos.',hora:'09:15'},
+  ]},
+  { id:12, nome:'Geral Syncra', iniciais:'GS', status:'grupo', cargo:'12 membros', naoLidas:3, ultimaMsg:'Mariana: Bem-vindos ao Syncra!', hora:'Ontem', mensagens:[
+    {de:'outro',autor:'Mariana L.',texto:'Bem-vindos ao Syncra! Sistema interno da empresa.',hora:'08:00'},
+    {de:'outro',autor:'Carlos M.',texto:'Ótima iniciativa!',hora:'08:03'},
+    {de:'eu',texto:'Muito melhor do que ficar trocando papel por aí 😄',hora:'08:05'},
+  ]},
+];
+
+let tabAtiva = 'direto', convAtiva = null;
+
+function renderLista(lista) {
+  const el = document.getElementById('conv-list');
+  if(!el) return;
+  const busca = (document.getElementById('search-conv')?.value||'').toLowerCase();
+  const f = lista.filter(c => c.nome.toLowerCase().includes(busca));
+  if(!f.length){ el.innerHTML = '<div class="conv-empty">Nenhuma conversa encontrada</div>'; return; }
+  el.innerHTML = f.map(c => `
+    <div class="conv-item ${convAtiva&&convAtiva.id===c.id?'active':''}" onclick="abrirConversa(${c.id})">
+      <div class="conv-av">
+        ${c.iniciais}
+        <span class="cv-dot ${c.status}"></span>
+      </div>
+      <div class="conv-info">
+        <div class="conv-top"><span class="conv-nome">${c.nome}</span><span class="conv-hora">${c.hora}</span></div>
+        <div class="conv-bot"><span class="conv-prev">${c.ultimaMsg}</span>${c.naoLidas>0?`<span class="conv-badge">${c.naoLidas}</span>`:''}</div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function abrirConversa(id) {
+  const lista = tabAtiva==='direto'?conversasDireto:conversasGrupos;
+  convAtiva = lista.find(c=>c.id===id);
+  if(!convAtiva) return;
+  convAtiva.naoLidas = 0;
+  document.getElementById('ch-av').textContent = convAtiva.iniciais;
+  document.getElementById('ch-name').textContent = convAtiva.nome;
+  const s = document.getElementById('ch-status');
+  s.textContent = convAtiva.status==='grupo'?convAtiva.cargo:convAtiva.status;
+  s.className = 'ch-status ' + convAtiva.status;
+  document.getElementById('chat-empty').style.display = 'none';
+  document.getElementById('chat-active').style.display = 'flex';
+  renderMensagens();
+  renderLista(lista);
+}
+
+function renderMensagens() {
+  const area = document.getElementById('msgs-area');
+  area.innerHTML = convAtiva.mensagens.map(m => {
+    const isEu = m.de==='eu';
+    return `
+      <div class="msg-row ${isEu?'sent':'recv'}">
+        ${!isEu&&tabAtiva==='grupos'?`<div class="msg-gav">${convAtiva.iniciais}</div>`:''}
+        <div class="msg-bubble ${isEu?'sent':'recv'}">
+          ${m.autor?`<span class="msg-autor">${m.autor}</span>`:''}
+          <span class="msg-text">${m.texto}</span>
+          <span class="msg-meta">${m.hora}${isEu?' ✓✓':''}</span>
+        </div>
+      </div>
+    `;
+  }).join('');
+  area.scrollTop = area.scrollHeight;
+}
+
+function enviarMensagem() {
+  const inp = document.getElementById('msg-input');
+  const txt = inp.value.trim();
+  if(!txt||!convAtiva) return;
+  const hora = new Date().toTimeString().slice(0,5);
+  convAtiva.mensagens.push({de:'eu',texto:txt,hora});
+  convAtiva.ultimaMsg = txt; convAtiva.hora = hora;
+  inp.value = '';
+  renderMensagens();
+  renderLista(tabAtiva==='direto'?conversasDireto:conversasGrupos);
+  setTimeout(() => {
+    const resps = ['Entendido, obrigado!','Ok, vou verificar.','Certo, já estou vendo.','Perfeito, pode deixar!','Recebi, muito obrigado.'];
+    const resp = resps[Math.floor(Math.random()*resps.length)];
+    convAtiva.mensagens.push({de:'outro',texto:resp,hora});
+    convAtiva.ultimaMsg = resp;
+    renderMensagens();
+    renderLista(tabAtiva==='direto'?conversasDireto:conversasGrupos);
+  }, 1200);
+}
+
+function trocarTab(tab, el) {
+  tabAtiva = tab; convAtiva = null;
+  document.querySelectorAll('.cl-tab').forEach(t=>t.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('chat-empty').style.display = 'flex';
+  document.getElementById('chat-active').style.display = 'none';
+  renderLista(tab==='direto'?conversasDireto:conversasGrupos);
+}
+
+function filtrarConversas() { renderLista(tabAtiva==='direto'?conversasDireto:conversasGrupos); }
+
+function simularAnexo() {
+  if(!convAtiva) return;
+  const hora = new Date().toTimeString().slice(0,5);
+  convAtiva.mensagens.push({de:'eu',texto:'📎 documento_syncra.pdf',hora});
+  convAtiva.ultimaMsg = '📎 documento_syncra.pdf';
+  renderMensagens();
+  renderLista(tabAtiva==='direto'?conversasDireto:conversasGrupos);
+}
+</script>
+</body>
+</html>
